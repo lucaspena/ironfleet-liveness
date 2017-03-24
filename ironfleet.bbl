@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+
+\bibitem{ironclad}
+C.~Hawblitzel, J.~Howell, J.~Lorch, A.~Narayan, B.~Parno, D.~Zhang, and
+  B.~Zill, ``Ironclad apps: End-to-end security via automated full-system
+  verification,'' in {\em USENIX Symposium on Operating Systems Design and
+  Implementation (OSDI)}, USENIX – Advanced Computing Systems Association,
+  October 2014.
+
+\bibitem{ironfleet}
+C.~Hawblitzel, J.~Howell, M.~Kapritsos, J.~Lorch, B.~Parno, M.~L. Roberts,
+  S.~Setty, and B.~Zill, ``Ironfleet: Proving practical distributed systems
+  correct,'' in {\em Proceedings of the ACM Symposium on Operating Systems
+  Principles (SOSP)}, ACM – Association for Computing Machinery, October
+  2015.
+
+\end{thebibliography}
