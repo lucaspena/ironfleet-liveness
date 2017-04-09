@@ -6,6 +6,8 @@
 \documentclass{llncs}
 %
 \usepackage{makeidx}  % allows for indexgeneration
+\usepackage{amsmath}
+\usepackage{amssymb}
 %
 \begin{document}
 %
@@ -21,7 +23,14 @@
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-Ironclad \cite{ironclad} and IronFleet \cite{ironfleet} are...
+  As more complicated software systems are becoming prevalent in today's world,
+  more sophisticated program verification techniques are needed to reason about
+  these. In particular, verification of liveness properties, or asserting that a
+  property must occur, is traditionally difficult. In this paper, we survey the
+  IronFleet methodology~\cite{ironfleet}, a technique for building distributed
+  systems that are provably correct, as it applies to verification of liveness
+  properties. We consider the embedding of the Temporal Logic of Actions used in
+  IronFleet, and discuss some limitations in their implementation.
 \end{abstract}
 %
 \section{Introduction}
@@ -36,9 +45,60 @@ Ironclad \cite{ironclad} and IronFleet \cite{ironfleet} are...
 \subsubsection{Limitations}
 %
 \section{Temporal Logic of Actions}
-\subsection{TLA Rules}
-\subsection{Examples}
-%
+The Temporal Logic of Actions (TLA) is an extension of Linear Temporal Logic
+introduced to reason about concurrent systems. TLA introduces ``primed''
+variables, which represents the value of a variable in the next state. For
+example, the TLA \textit{action} $$x' = x + y$$ specifies that the value of $x$
+in the next state is equal to the value of $x + y$ in the current state. An
+action is satisfied by a pair of states $\langle s, t \rangle$, where $s$ is a
+valuation on the unprimed variables and $t$ is a valuation on the primed
+variables. The notion of primed variables allow us to specify a rich class of
+formulas not expressible in normal LTL.
+
+First, we can represent the action $Unchanged\;f \equiv f' = f$ for any 
+function $f$  without primed variables, which states that $f$ is a
+stuttering step. Using this, we can also represent the derived actions
+$[\mathcal A]_f$ and $\langle \mathcal A \rangle_f$ for any action
+$\mathcal A$. These respectively represent that an action either satisfies $\mathcal A$ or
+stutters (w.r.t. $f$), and that an action that satisfies $\mathcal A$
+necessarily changes $f$. These are defined as follows:
+\begin{align*}
+  [\mathcal A]_f \equiv \mathcal A \vee Unchanged\;f \hspace{1.5cm}
+  & \langle \mathcal A \rangle_f \equiv \mathcal A \wedge \neg(Unchanged\;f)
+\end{align*}
+TLA also introduces the action $Enabled\;\mathcal A$ which specifies that for
+any $s$, there is a $t$ such that $\langle s, t \rangle$ satisfies $\mathcal A$.
+
+TLA \textit{formulas} add the temporal operator $\square$, like in LTL. In
+addition, quantification over formulas is allowed. Derived formulas such as
+$\lozenge$ are as in LTL. Other derived formulas include $F \leadsto G$
+(\textit{leads to}), WF$_f(\mathcal A)$ (\textit{weak fairness}), and
+SF$_f(\mathcal A)$ (\textit{strong fairness}). These are defined as follows:
+\begin{align*}
+  F \leadsto G &\equiv \square(F \Rightarrow \lozenge G) \\
+  \text{WF}_f(\mathcal A) &\equiv \square\lozenge\langle\mathcal A\rangle_f \vee \square\lozenge\neg Enabled\;\langle\mathcal A\rangle_f \\
+  \text{SF}_f(\mathcal A) &\equiv \square\lozenge\langle\mathcal A\rangle_f \vee \lozenge\square\neg Enabled\;\langle\mathcal A\rangle_f
+\end{align*}
+For use in verification, these derived formulas can express most liveness
+properties a user may want to express. Of course, for verification, we need
+proof rules allowing us to reason about these formulas, which we present below.
+
+\vspace*{0.5cm}
+TODO: rules here
+\vspace*{0.5cm}
+
+These rules allow us to reason about both strong fairness and weak fairness,
+both as a hypothesis and a conclusion. The use of these rules is demonstrated
+via a simple program that nondeterministically chooses one of two variables to
+increment ad infinitum. One can define a naive implementation of this program,
+as well as a more complex one using semaphores.
+
+The TLA rules above can be used to prove weak fairness of the first
+implementation, strong fairness of the second, and it can even be used to prove
+that the semaphore implementation is a refinement of the naive implementation.
+Notably, all four of the above rules must be used for these proofs.
+
+
 \section{Related Work}
 See~\cite{other-liveness}.
 %
