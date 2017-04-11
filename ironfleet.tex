@@ -34,14 +34,31 @@
 \end{abstract}
 %
 \section{Introduction}
+%Talk about what safety/liveness are at a high level (not going into verification).
+
 \subsection{Safety Verification}
 \subsection{Liveness Verification}
+Liveness verification has the same theoretical complexity as safety verification
+(cite). However, in practice, it is much more difficult to verify liveness
+properties. In contrast to safety, verifying liveness requires proving the
+absence of an infinite counterexample. Clearly, it is fruitless to do any kind
+of brute force search for the absence of such a counterexample. Instead,
+specific techniques for verifying liveness properties have been developed. These
+include BDD-based model checking (cite), converting liveness properties to
+safety properties (cite), and simulation-based liveness checking (cite).
+
+The IronFleet methodology uses a proof strategy based on Lamport's Temporal
+Logic of Actions (TLA) that chains smaller proofs together to assert the
+existence of some final condition (see
+Section~\ref{sec:liveness-ironfleet}). Unlike the related work on liveness
+verification, IronFleet is the first to verify nontrivial liveness properties on
+a large-scale distributed system.
 %
 \section{IronFleet}
 \subsection{Dafny}
 \subsection{End-to-end Verification}
 \subsection{Refinement}
-\subsection{Liveness Verification in IronFleet}
+\subsection{Liveness Verification in IronFleet}\label{sec:liveness-ironfleet}
 \subsubsection{Limitations}
 %
 \section{Temporal Logic of Actions}
