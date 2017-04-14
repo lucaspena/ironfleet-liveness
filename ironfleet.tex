@@ -8,6 +8,7 @@
 \usepackage{makeidx}  % allows for indexgeneration
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
 %
 \begin{document}
 %
@@ -34,18 +35,19 @@
 \end{abstract}
 %
 \section{Introduction}
-%Talk about what safety/liveness are at a high level (not going into verification).
+%Talk about what safety/liveness/formal verification are at a high level 
 
 \subsection{Safety Verification}
+Most formal verification focuses on verifying safety properties. These
+
 \subsection{Liveness Verification}
 Liveness verification has the same theoretical complexity as safety verification
 (cite). However, in practice, it is much more difficult to verify liveness
 properties. In contrast to safety, verifying liveness requires proving the
 absence of an infinite counterexample. Clearly, it is fruitless to do any kind
 of brute force search for the absence of such a counterexample. Instead,
-specific techniques for verifying liveness properties have been developed. These
-include BDD-based model checking (cite), converting liveness properties to
-safety properties (cite), and simulation-based liveness checking (cite).
+specific techniques for verifying liveness properties have been developed, which
+we discuss in Section~\ref{sec:rel-work}.
 
 The IronFleet methodology uses a proof strategy based on Lamport's Temporal
 Logic of Actions (TLA) that chains smaller proofs together to assert the
@@ -62,8 +64,8 @@ a large-scale distributed system.
 \subsubsection{Limitations}
 %
 \section{Temporal Logic of Actions}
-The Temporal Logic of Actions (TLA) is an extension of Linear Temporal Logic
-introduced to reason about concurrent systems. TLA introduces ``primed''
+The Temporal Logic of Actions (TLA) (cite) is an extension of Linear Temporal
+Logic introduced to reason about concurrent systems. TLA introduces ``primed''
 variables, which represents the value of a variable in the next state. For
 example, the TLA \textit{action} $$x' = x + y$$ specifies that the value of $x$
 in the next state is equal to the value of $x + y$ in the current state. An
@@ -100,9 +102,10 @@ For use in verification, these derived formulas can express most liveness
 properties a user may want to express. Of course, for verification, we need
 proof rules allowing us to reason about these formulas, which we present below.
 
-\vspace*{0.5cm}
-TODO: rules here
-\vspace*{0.5cm}
+\begin{figure}
+\includegraphics[scale=0.6]{tla-rules}
+\centering
+\end{figure}
 
 These rules allow us to reason about both strong fairness and weak fairness,
 both as a hypothesis and a conclusion. The use of these rules is demonstrated
@@ -117,7 +120,11 @@ Notably, all four of the above rules must be used for these proofs.
 
 
 \section{Related Work}
-See~\cite{other-liveness}.
+Though verification of liveness properties is notoriously difficult and rare,
+the IronFleet methodology was of course not the first to formally verify
+liveness properties. Previous techniques include BDD-based model checking
+(cite), converting liveness properties to safety properties (cite), and
+simulation-based liveness checking (cite).  See~\cite{other-liveness}.
 %
 \section{Conclusion}
 
