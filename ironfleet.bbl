@@ -7,11 +7,25 @@ C.~Hawblitzel, J.~Howell, M.~Kapritsos, J.~Lorch, B.~Parno, M.~L. Roberts,
   Principles (SOSP)}, ACM – Association for Computing Machinery, October
   2015.
 
-\bibitem{other-liveness}
+\bibitem{simulation-liveness}
 P.~K. Nalla, R.~K. Gajavelly, H.~Mony, J.~Baumgartner, and R.~Kanzelman,
   ``Effective liveness verification using a transformation-based framework,''
   in {\em 2014 27th International Conference on {VLSI} Design and 2014 13th
   International Conference on Embedded Systems, Mumbai, India, January 5-9,
   2014}, pp.~74--79, 2014.
+
+\bibitem{tla-lamport}
+L.~Lamport, ``The temporal logic of actions,'' {\em ACM Trans. Program. Lang.
+  Syst.}, vol.~16, pp.~872--923, May 1994.
+
+\bibitem{Ravi2000}
+K.~Ravi, R.~Bloem, and F.~Somenzi, {\em A Comparative Study of Symbolic
+  Algorithms for the Computation of Fair Cycles}, pp.~162--179.
+\newblock Berlin, Heidelberg: Springer Berlin Heidelberg, 2000.
+
+\bibitem{Schuppan2006}
+V.~Schuppan and A.~Biere, ``Liveness checking as safety checking for infinite
+  state spaces,'' {\em Electron. Notes Theor. Comput. Sci.}, vol.~149,
+  pp.~79--96, Feb. 2006.
 
 \end{thebibliography}

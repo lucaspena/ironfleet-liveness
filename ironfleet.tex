@@ -36,10 +36,10 @@
 %
 \section{Introduction}
 %Talk about what safety/liveness/formal verification are at a high level
-Many tools are used for ensuring correctness of a system. These range from
-testing to full formal verification. Formal verification is obviously the most
-desirable, but the most difficult in practice. One generally requires a formal
-specification of the property he or she is proving correct.
+%% Many tools are used for ensuring correctness of a system. These range from
+%% testing to full formal verification. Formal verification is obviously the most
+%% desirable, but the most difficult in practice. One generally requires a formal
+%% specification of the property he or she is proving correct.
 
 \subsection{Safety Verification}
 Most formal verification techniques focus on verifying safety
@@ -53,14 +53,13 @@ specifically on verifying safety properties.
 \subsection{Liveness Verification}
 In contrast, a liveness property asserts that ``somerthing good will happen.''
 This means one must have the entire execution in hand in order to assert the
-absence of a liveness property. Thus, liveness properties have
-\textit{infinite length counterexamples}.
-Thus, though liveness verification has the same theoretical complexity as safety
-verification (cite), in practice it is much more difficult to verify liveness
-properties. Clearly, it is fruitless to do any kind of brute force search for
-the absence of such a counterexample. Instead, specific techniques for verifying
-liveness properties have been developed, which we discuss in
-Section~\ref{sec:rel-work}.
+absence of a liveness property. Thus, liveness properties have \textit{infinite
+  length counterexamples}.  Thus, though liveness verification has the same
+theoretical complexity as safety verification~\cite{simulation-liveness}, in
+practice it is much more difficult to verify liveness properties. Clearly, it is
+fruitless to do any kind of brute force search for the absence of such a
+counterexample. Instead, specific techniques for verifying liveness properties
+have been developed, which we discuss in Section~\ref{sec:rel-work}.
 
 The IronFleet methodology uses a proof strategy based on Lamport's Temporal
 Logic of Actions (TLA) that chains smaller proofs together to assert the
@@ -82,7 +81,7 @@ approach used by Ironfleet, and use the IronRSL system for further analysis.
 \subsubsection{Limitations}
 %
 \section{Temporal Logic of Actions}
-The Temporal Logic of Actions (TLA) (cite) is an extension of Linear Temporal
+The Temporal Logic of Actions (TLA)~\cite{tla-lamport} is an extension of Linear Temporal
 Logic introduced to reason about concurrent systems. TLA introduces ``primed''
 variables, which represents the value of a variable in the next state. For
 example, the TLA \textit{action} $$x' = x + y$$ specifies that the value of $x$
@@ -140,9 +139,10 @@ Notably, all four of the above rules must be used for these proofs.
 \section{Related Work}\label{sec:rel-work}
 Though verification of liveness properties is notoriously difficult and rare,
 the IronFleet methodology was of course not the first to formally verify
-liveness properties. Previous techniques include BDD-based model checking
-(cite), converting liveness properties to safety properties (cite), and
-simulation-based liveness checking (cite).  See~\cite{other-liveness}.
+liveness properties. Previous techniques include BDD-based model
+checking~\cite{Ravi2000}, converting liveness properties to safety
+properties~\cite{Schuppan2006}, and simulation-based liveness
+checking~\cite{simulation-liveness}.
 %
 \section{Conclusion}
 
