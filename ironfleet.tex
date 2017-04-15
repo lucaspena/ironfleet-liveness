@@ -70,6 +70,11 @@ verification, IronFleet is the first to verify nontrivial liveness properties on
 a large-scale distributed system.
 %
 \section{IronFleet}
+Microsoft's Ironfleet methodology, is claimed to be the first complete suite of 
+solutions that can perform automated, machine checked verification 
+in non trivial, and distributed systems. Ironfleet supports 
+verification of both safety and liveness properties. We discuss, in detail, the 
+approach used by Ironfleet, and use the IronRSL system for further analysis.
 \subsection{Dafny}
 \subsection{End-to-end Verification}
 \subsection{Refinement}
@@ -132,7 +137,7 @@ that the semaphore implementation is a refinement of the naive implementation.
 Notably, all four of the above rules must be used for these proofs.
 
 
-\section{Related Work}
+\section{Related Work}\label{sec:rel-work}
 Though verification of liveness properties is notoriously difficult and rare,
 the IronFleet methodology was of course not the first to formally verify
 liveness properties. Previous techniques include BDD-based model checking
