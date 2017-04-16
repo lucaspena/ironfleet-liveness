@@ -35,19 +35,36 @@
 \end{abstract}
 %
 \section{Introduction}
-%Talk about what safety/liveness/formal verification are at a high level 
+Many tools are used for ensuring correctness of a system. These range from
+testing to full formal verification. Formal verification is obviously the most
+desirable, but the most difficult in practice. One generally requires a formal
+specification of the property he or she is proving correct. This often makes
+large-scale formal verification a difficult and cumbersome task. Still, many
+success stories exist in the area of large-scale formal verification, such as
+the CompCert compiler~\cite{compcert} and the Verve operating
+system~\cite{verve}. However, formal verification of large-scale distributed
+systems are basically nonexistent, due to the difficulty in verifying liveness
+properties rather than safety properties.
 
 \subsection{Safety Verification}
-Most formal verification focuses on verifying safety properties. These
+Most formal verification techniques focus on verifying safety
+properties. Informally, a safety property asserts that ``nothing bad ever
+happens.'' More formally, this means if a system violates a safety property $P$
+at any point in its execution, the full execution must also violate $P$. Thus,
+safety properties have \textit{finite length counterexamples}. Because of this
+crucial fact, many techniques such as model checking and monitoring focus
+specifically on verifying safety properties.
 
 \subsection{Liveness Verification}
-Liveness verification has the same theoretical complexity as safety verification
-(cite). However, in practice, it is much more difficult to verify liveness
-properties. In contrast to safety, verifying liveness requires proving the
-absence of an infinite counterexample. Clearly, it is fruitless to do any kind
-of brute force search for the absence of such a counterexample. Instead,
-specific techniques for verifying liveness properties have been developed, which
-we discuss in Section~\ref{sec:rel-work}.
+In contrast, a liveness property asserts that ``somerthing good will happen.''
+This means one must have the entire execution in hand in order to assert the
+absence of a liveness property. Thus, liveness properties have \textit{infinite
+  length counterexamples}.  Thus, though liveness verification has the same
+theoretical complexity as safety verification~\cite{simulation-liveness}, in
+practice it is much more difficult to verify liveness properties. Clearly, it is
+fruitless to do any kind of brute force search for the absence of such a
+counterexample. Instead, specific techniques for verifying liveness properties
+have been developed, which we discuss in Section~\ref{sec:rel-work}.
 
 The IronFleet methodology uses a proof strategy based on Lamport's Temporal
 Logic of Actions (TLA) that chains smaller proofs together to assert the
@@ -77,7 +94,7 @@ on Dafny for describing and proving high level specifications of large systems.
 \subsubsection{Limitations}
 %
 \section{Temporal Logic of Actions}
-The Temporal Logic of Actions (TLA) (cite) is an extension of Linear Temporal
+The Temporal Logic of Actions (TLA)~\cite{tla-lamport} is an extension of Linear Temporal
 Logic introduced to reason about concurrent systems. TLA introduces ``primed''
 variables, which represents the value of a variable in the next state. For
 example, the TLA \textit{action} $$x' = x + y$$ specifies that the value of $x$
@@ -132,13 +149,23 @@ that the semaphore implementation is a refinement of the naive implementation.
 Notably, all four of the above rules must be used for these proofs.
 
 
-\section{Related Work}
+\section{Related Work}\label{sec:rel-work}
 Though verification of liveness properties is notoriously difficult and rare,
 the IronFleet methodology was of course not the first to formally verify
-liveness properties. Previous techniques include BDD-based model checking
-(cite), converting liveness properties to safety properties (cite), and
-simulation-based liveness checking (cite).  See~\cite{other-liveness}.
-%
+liveness properties. Previous techniques include BDD-based model
+checking~\cite{Ravi2000} as well as converting liveness properties to safety
+properties~\cite{Schuppan2006}.
+
+BDD-based model checking relies on Binary Decision Diagrams (BDDs) as a data
+structure that can be used to represent boolean functions. Unfortunately, the
+size of the BDD can scale exponentially with the size of the system, so this
+approach is not scalable.
+
+Converting a liveness property to a safety property is an attractive idea, since
+it opens up the use of existing algorithms to verify safety properties. However,
+the translation used in~\cite{Schuppan2006} incurs a large increase in problem
+size, making this technique not scalable as well.
+
 \section{Conclusion}
 
 %
