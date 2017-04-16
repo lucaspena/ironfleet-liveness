@@ -77,7 +77,7 @@ a large-scale distributed system.
 \section{IronFleet}
 Microsoft's IronFleet methodology, is claimed to be the first complete suite of 
 solutions that can perform automated, machine checked verification 
-in non trivial, and distributed systems. IronFleet supports 
+in nontrivial, and distributed systems. IronFleet supports 
 verification of both safety and liveness properties. We discuss, in detail, the 
 approach used by IronFleet. We use the IronRSL system for further analysis.
 
@@ -91,15 +91,15 @@ on Dafny for describing specifications and proving correctness of implementation
 Verification techniques employed in the IronFleet suite are not novel. IronFleet's 
 motivation is to use existing verification techniques on large, complicated, and practical distributed
 systems. In this regard, IronFleet breaks new ground. The software codebase that IronFleet
-has been used to verify have features and performance comparable to similar, non-verified solutions. 
+has been used to verify has features and performance comparable to similar, non-verified solutions. 
 IronFleet supports both safety and liveness verification. When liveness verification is taken into account, 
 the IronFleet methodology is supposedly the first succesful attempt at verifying liveness of both
-the protocol, and the conforming implementation. 
+the protocol and the conforming implementation. 
 
-IronFleet achieves end to end verification of distributed systems by structing the system into layers, and 
+IronFleet achieves end to end verification of distributed systems by structing the system into layers and 
 developing proofs on them. IronFleet blends TLA-style refinement to reason about protocol-level concurrency, 
 while ignoring the implementation. It then uses Floyd-Hoare style verification to reason about implementation,
-while ignoring concurrency. This allows the IronFleet to reason about both the high-level specification, and
+while ignoring concurrency. This allows the IronFleet to reason about both the high-level specification and
 the impementation. We briefly descirbe the layers used in IronFleet to structure reasoning about systems - 
 
 \begin{itemize}
