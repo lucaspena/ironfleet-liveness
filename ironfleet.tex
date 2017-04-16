@@ -78,9 +78,40 @@ Microsoft's Ironfleet methodology, is claimed to be the first complete suite of
 solutions that can perform automated, machine checked verification 
 in non trivial, and distributed systems. Ironfleet supports 
 verification of both safety and liveness properties. We discuss, in detail, the 
-approach used by Ironfleet, and use the IronRSL system for further analysis.
+approach used by Ironfleet. We use the IronRSL system for further analysis.
+
 \subsection{Dafny}
+Dafny is a programming language with built-in specification constructs. The Dafny
+ecosystem consists of a static program verifier used for proving correctness of
+programs and their specifications. The ironfleet methodology relies 
+on Dafny for describing specifications and proving correctness of implementations. 
+
 \subsection{End-to-end Verification}
+Verification techniques employed in the Ironfleet suite are not novel. Ironfleet's 
+motivation is to use existing verification techniques on large, complicated, and practical distributed
+systems. In this regard, Ironfleet breaks new ground. The software codebase that Ironfleet
+has been used to verify have features and performance comparable to similar, non-verified solutions. 
+Ironfleet supports both safety and liveness verification. When liveness verification is taken into account, 
+the Ironfleet methodology is supposedly the first succesful attempt at verifying liveness of both
+the protocol, and the conforming implementation. 
+
+Ironfleet achieves end to end verification of distributed systems by structing the system into layers, and 
+developing proofs on them. Ironfleet blends TLA-style refinement to reason about protocol-level concurrency, 
+while ignoring the implementation. It then uses Floyd-Hoare style verification to reason about implementation,
+while ignoring concurrency. This allows the Ironfleet to reason about both the high-level specification, and
+the impementation. We briefly descirbe the layers used in Ironfleet to structure reasoning about systems - 
+\begin{\itemize}
+\item At the top layer, a high level specification for the entire system's behavior is provided. 
+\item The middle layer contains the specification for the distributed protocol implemented by the
+    system. Ironfleet TLA-style techniques uses TLA style techniques to prove that the middle layer 
+    refines the top layer.
+\item The third layer contains the implementation details of the protocol, or the code to be run on each node.
+    Ironfleet uses refinement to prove that the implementation layer refines the protocol description layer. 
+\end{\itemize}
+
+The layering methodology allows Ironfleet to deal with complexities of the system effectively. 
+
+
 \subsection{Refinement}
 \subsection{Liveness Verification in IronFleet}\label{sec:liveness-ironfleet}
 \subsubsection{Limitations}
