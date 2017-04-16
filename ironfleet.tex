@@ -84,9 +84,20 @@ approach used by Ironfleet. We use the IronRSL system for further analysis.
 Dafny is a programming language with built-in specification constructs. The Dafny
 ecosystem consists of a static program verifier used for proving correctness of
 programs and their specifications. The ironfleet methodology relies 
-on Dafny for describing and proving high level specifications of large systems.
+on Dafny for describing specifications and proving correctness of implementations. 
 
 \subsection{End-to-end Verification}
+Verification techniques employed in the Ironfleet suite are not novel. Ironfleet's 
+motivation is to use existing verification techniques on large, complicated, and practical distributed
+systems. In this regard, Ironfleet breaks new ground. The software codebase that Ironfleet
+has been used to verify have features and performance comparable to similar, non-verified solutions. 
+Ironfleet supports both safety and liveness verification. When liveness verification is taken into account, 
+the Ironfleet methodology is supposedly the first succesful attempt at verifying liveness of both
+the protocol, and the conforming implementation. 
+
+
+
+
 
 
 \subsection{Refinement}
