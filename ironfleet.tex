@@ -35,11 +35,16 @@
 \end{abstract}
 %
 \section{Introduction}
-%Talk about what safety/liveness/formal verification are at a high level
-%% Many tools are used for ensuring correctness of a system. These range from
-%% testing to full formal verification. Formal verification is obviously the most
-%% desirable, but the most difficult in practice. One generally requires a formal
-%% specification of the property he or she is proving correct.
+Many tools are used for ensuring correctness of a system. These range from
+testing to full formal verification. Formal verification is obviously the most
+desirable, but the most difficult in practice. One generally requires a formal
+specification of the property he or she is proving correct. This often makes
+large-scale formal verification a difficult and cumbersome task. Still, many
+success stories exist in the area of large-scale formal verification, such as
+the CompCert compiler~\cite{compcert} and the Verve operating
+system~\cite{verve}. However, formal verification of large-scale distributed
+systems are basically nonexistent, due to the difficulty in verifying liveness
+properties rather than safety properties.
 
 \subsection{Safety Verification}
 Most formal verification techniques focus on verifying safety
