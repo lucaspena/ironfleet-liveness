@@ -9,6 +9,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{dafny}
 %
 \begin{document}
 %
@@ -55,7 +56,7 @@ safety properties have \textit{finite length counterexamples}. Because of this
 crucial fact, many techniques such as model checking and monitoring focus
 specifically on verifying safety properties.
 
-\subsection{Liveness Verification}
+\subsection{Liveness Verification}\label{sec:liveness-description}
 In contrast, a liveness property asserts that ``somerthing good will happen.''
 This means one must have the entire execution in hand in order to assert the
 absence of a liveness property. Thus, liveness properties have \textit{infinite
@@ -74,11 +75,11 @@ verification, IronFleet is the first to verify nontrivial liveness properties on
 a large-scale distributed system.
 %
 \section{IronFleet}
-Microsoft's Ironfleet methodology, is claimed to be the first complete suite of 
+Microsoft's IronFleet methodology, is claimed to be the first complete suite of 
 solutions that can perform automated, machine checked verification 
-in non trivial, and distributed systems. Ironfleet supports 
+in non trivial, and distributed systems. IronFleet supports 
 verification of both safety and liveness properties. We discuss, in detail, the 
-approach used by Ironfleet. We use the IronRSL system for further analysis.
+approach used by IronFleet. We use the IronRSL system for further analysis.
 
 \subsection{Dafny}
 Dafny is a programming language with built-in specification constructs. The Dafny
@@ -87,36 +88,78 @@ programs and their specifications. The ironfleet methodology relies
 on Dafny for describing specifications and proving correctness of implementations. 
 
 \subsection{End-to-end Verification}
-Verification techniques employed in the Ironfleet suite are not novel. Ironfleet's 
+Verification techniques employed in the IronFleet suite are not novel. IronFleet's 
 motivation is to use existing verification techniques on large, complicated, and practical distributed
-systems. In this regard, Ironfleet breaks new ground. The software codebase that Ironfleet
+systems. In this regard, IronFleet breaks new ground. The software codebase that IronFleet
 has been used to verify have features and performance comparable to similar, non-verified solutions. 
-Ironfleet supports both safety and liveness verification. When liveness verification is taken into account, 
-the Ironfleet methodology is supposedly the first succesful attempt at verifying liveness of both
+IronFleet supports both safety and liveness verification. When liveness verification is taken into account, 
+the IronFleet methodology is supposedly the first succesful attempt at verifying liveness of both
 the protocol, and the conforming implementation. 
 
-Ironfleet achieves end to end verification of distributed systems by structing the system into layers, and 
-developing proofs on them. Ironfleet blends TLA-style refinement to reason about protocol-level concurrency, 
+IronFleet achieves end to end verification of distributed systems by structing the system into layers, and 
+developing proofs on them. IronFleet blends TLA-style refinement to reason about protocol-level concurrency, 
 while ignoring the implementation. It then uses Floyd-Hoare style verification to reason about implementation,
-while ignoring concurrency. This allows the Ironfleet to reason about both the high-level specification, and
-the impementation. We briefly descirbe the layers used in Ironfleet to structure reasoning about systems - 
-\begin{\itemize}
+while ignoring concurrency. This allows the IronFleet to reason about both the high-level specification, and
+the impementation. We briefly descirbe the layers used in IronFleet to structure reasoning about systems - 
+
+\begin{itemize}
 \item At the top layer, a high level specification for the entire system's behavior is provided. 
 \item The middle layer contains the specification for the distributed protocol implemented by the
-    system. Ironfleet TLA-style techniques uses TLA style techniques to prove that the middle layer 
-    refines the top layer.
+    system. IronFleet TLA-style techniques uses TLA style techniques to prove that the middle layer 
+    refines (see Section~\ref{sec:refinement}) the top layer.
 \item The third layer contains the implementation details of the protocol, or the code to be run on each node.
-    Ironfleet uses refinement to prove that the implementation layer refines the protocol description layer. 
-\end{\itemize}
+    IronFleet uses refinement to prove that the implementation layer refines the protocol description layer. 
+\end{itemize}
 
-The layering methodology allows Ironfleet to deal with complexities of the system effectively. 
+The layering methodology allows IronFleet to deal with complexities of the system effectively. 
 
+\subsection{Refinement}\label{sec:refinement}
+We present a brief overview of the concept of Refinement, with an emphasis of its use in
+IronFleet. Refinement mapppings are used to prove that a low level specification correctly
+implements a high level one~\cite{Abadi}. In the context of IronFleet, refinement is directly 
+used to prove that a layer refines, or in other words, correctly implements the layer above it.
 
-\subsection{Refinement}
 \subsection{Liveness Verification in IronFleet}\label{sec:liveness-ironfleet}
+As mentioned in Section~\ref{sec:liveness-description}, liveness verification involves
+reasoning with infinite series of systems states, which creates challeneges for 
+provers, often causing them to time out rather than produce a result. IronFleet addresses
+this problem by using a custom embedding of Lamport's Temporal Logic of Action (see Section 
+~\ref{sec:tla}) in Dafny. IronFleet models the system's behavior B as a mapping from Integer to
+States, where $B[0]$ represents the first state, and $B[i]$ represents the $ith$~\cite{ironfleet}. 
+Since state of the art SMT solvers like Z3 do not provide direct support for temporal operators
+$\square$ and $\lozenge$, explicit quantification over states is used instead ($\square$ universally
+quantifies over all future states, while $\lozenge$ existentially quantifies over some future states).
+IronFleet uses Z3's support for triggers to control the quantification with heurisitics. 
+Using Heuristics, IronFleet can efficiently use TLA's INV1 and WF1 rules. Often, a liveness proof in 
+IronFleet can involve multiple invocations of the WF1 rule. We discuss the proof stategy briefly
+in following sections.
+
+\subsubsection{Always Enabled Actions}
+Liveness can be achieved by satisfying fairness, i.e. showing actions are available and occur 
+at the right time. One way of specification can be of the form "if Action a 
+becomes enabled, the system must eventually do it" ~\cite{lamport-tla-book}. However, 
+such specification result in complicated formulas that are hard to prove. Thus, 
+IronFleet adopts "Always Enabled Actions", or relies only on actions that are 
+always available to the system. In order to briefly explain the problem, we present
+a segment of example Dafny code taken from \cite{ironfleet} used in protocol level 
+specification of a safety property- 
+\begin{dafny}
+datatype Host = Host(held:bool,epoch:int)
+
+predicate HostGrant(s_old:Host,s_new:Host, spkt:Packet) 
+{ s_old.held && !s_new.held && spkt.msg.transfer?
+&& spkt.msg.epoch == s_old.epoch+1 }
+\end{dafny}
+The action HostGrant cannot be used as is, since it's not always enabled. 
+Instead, one use a predicate like "if you hold the lock, grant it to the next host;
+otherwise, do nothing", which is always enabled~\cite{ironfleet}. Always enabled
+actions may lead to machine closed specification, or specifications for which there can be no 
+conforming implementations~\cite{lamport-tla-book}. However, in IronFleet, since the implementation already exists,
+machine closed specifications are not a problem.
+
 \subsubsection{Limitations}
 %
-\section{Temporal Logic of Actions}
+\section{Temporal Logic of Actions}\label{sec:tla}
 The Temporal Logic of Actions (TLA)~\cite{tla-lamport} is an extension of Linear Temporal
 Logic introduced to reason about concurrent systems. TLA introduces ``primed''
 variables, which represents the value of a variable in the next state. For
