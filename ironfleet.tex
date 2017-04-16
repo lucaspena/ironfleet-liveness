@@ -125,7 +125,7 @@ reasoning with infinite series of systems states, which creates challeneges for
 provers, often causing them to time out rather than produce a result. IronFleet addresses
 this problem by using a custom embedding of Lamport's Temporal Logic of Action (see Section 
 ~\ref{sec:tla}) in Dafny. IronFleet models the system's behavior B as a mapping from Integer to
-States, where B[0] represents the first state, and B[i] represents the ith~\cite{ironfleet}. 
+States, where $B[0]$ represents the first state, and $B[i]$ represents the $ith$~\cite{ironfleet}. 
 Since state of the art SMT solvers like Z3 do not provide direct support for temporal operators
 $\square$ and $\lozenge$, explicit quantification over states is used instead ($\square$ universally
 quantifies over all future states, while $\lozenge$ existentially quantifies over some future states).
@@ -143,7 +143,6 @@ IronFleet adopts "Always Enabled Actions", or relies only on actions that are
 always available to the system. In order to briefly explain the problem, we present
 a segment of example Dafny code taken from \cite{ironfleet} used in protocol level 
 specification of a safety property- 
-
 \begin{dafny}
 datatype Host = Host(held:bool,epoch:int)
 
@@ -151,9 +150,12 @@ predicate HostGrant(s_old:Host,s_new:Host, spkt:Packet)
 { s_old.held && !s_new.held && spkt.msg.transfer?
 && spkt.msg.epoch == s_old.epoch+1 }
 \end{dafny}
-
-
-
+The action HostGrant cannot be used as is, since it's not always enabled. 
+Instead, one use a predicate like "if you hold the lock, grant it to the next host;
+otherwise, do nothing", which is always enabled~\cite{ironfleet}. Always enabled
+actions may lead to machine closed specification, or specifications for which there can be no 
+conforming implementations~\cite{lamport-tla-book}. However, in IronFleet, since the implementation already exists,
+machine closed specifications are not a problem.
 
 \subsubsection{Limitations}
 %
