@@ -145,10 +145,19 @@ Notably, all four of the above rules must be used for these proofs.
 Though verification of liveness properties is notoriously difficult and rare,
 the IronFleet methodology was of course not the first to formally verify
 liveness properties. Previous techniques include BDD-based model
-checking~\cite{Ravi2000}, converting liveness properties to safety
-properties~\cite{Schuppan2006}, and simulation-based liveness
-checking~\cite{simulation-liveness}.
-%
+checking~\cite{Ravi2000} as well as converting liveness properties to safety
+properties~\cite{Schuppan2006}.
+
+BDD-based model checking relies on Binary Decision Diagrams (BDDs) as a data
+structure that can be used to represent boolean functions. Unfortunately, the
+size of the BDD can scale exponentially with the size of the system, so this
+approach is not scalable.
+
+Converting a liveness property to a safety property is an attractive idea, since
+it opens up the use of existing algorithms to verify safety properties. However,
+the translation used in~\cite{Schuppan2006} incurs a large increase in problem
+size, making this technique not scalable as well.
+
 \section{Conclusion}
 
 %
