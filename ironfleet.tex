@@ -60,7 +60,7 @@ specifically on verifying safety properties.
 In contrast, a liveness property asserts that ``something good will happen.''
 This means one must have the entire execution in hand in order to assert the
 absence of a liveness property. Thus, liveness properties have \textit{infinite
-  length counterexamples}.  Thus, though liveness verification has the same
+  length counterexamples}.  Therefore, though liveness verification has the same
 theoretical complexity as safety verification~\cite{simulation-liveness}, in
 practice it is much more difficult to verify liveness properties. Clearly, it is
 fruitless to do any kind of brute force search for the absence of such a
@@ -138,7 +138,8 @@ verification of both safety and liveness properties. We discuss, in detail, the
 approach used by IronFleet. We use the IronRSL system for further analysis.
 
 \subsection{Dafny}
-Dafny is a programming language with built-in specification constructs. The Dafny
+Dafny~\cite{leino-dafny} is a programming language with built-in specification constructs.
+The Dafny
 ecosystem consists of a static program verifier used for proving correctness of
 programs and their specifications. The IronFleet methodology relies 
 on Dafny for describing specifications and proving correctness of implementations. 
@@ -160,7 +161,7 @@ the implementation. We briefly describe the layers used in IronFleet to structur
 \begin{itemize}
 \item At the top layer, a high level specification for the entire system's behavior is provided. 
 \item The middle layer contains the specification for the distributed protocol implemented by the
-    system. IronFleet TLA-style techniques uses TLA style techniques to prove that the middle layer 
+    system. IronFleet uses TLA-style techniques to prove that the middle layer 
     refines (see Section~\ref{sec:refinement}) the top layer.
 \item The third layer contains the implementation details of the protocol, or the code to be run on each node.
     IronFleet uses refinement to prove that the implementation layer refines the protocol description layer. 
@@ -176,10 +177,10 @@ used to prove that a layer refines, or in other words, correctly implements the 
 
 \subsection{Always Enabled Actions}\label{sec:always-enabled}
 Liveness can be achieved by satisfying fairness, i.e. showing actions are available and occur 
-at the right time. One way of specification can be of the form "if Action a 
-becomes enabled, the system must eventually do it" ~\cite{lamport-tla-book}. However, 
+at the right time. One way of specification can be of the form ``if Action a 
+becomes enabled, the system must eventually do it'' ~\cite{lamport-tla-book}. However, 
 such specification result in complicated formulas that are hard to prove. Thus, 
-IronFleet adopts "Always Enabled Actions", or relies only on actions that are 
+IronFleet adopts ``Always Enabled Actions'', or relies only on actions that are 
 always available to the system. In order to briefly explain the problem, we present
 a segment of example Dafny code taken from \cite{ironfleet} used in protocol level 
 specification of a safety property- 
@@ -191,8 +192,8 @@ predicate HostGrant(s_old:Host,s_new:Host, spkt:Packet)
 && spkt.msg.epoch == s_old.epoch+1 }
 \end{dafny}
 The action HostGrant cannot be used as is, since it's not always enabled. 
-Instead, one use a predicate like "if you hold the lock, grant it to the next host;
-otherwise, do nothing", which is always enabled~\cite{ironfleet}. Always enabled
+Instead, one use a predicate like ``if you hold the lock, grant it to the next host;
+otherwise, do nothing'', which is always enabled~\cite{ironfleet}. Always enabled
 actions may lead to machine closed specification, or specifications for which there can be no 
 conforming implementations~\cite{lamport-tla-book}. However, in IronFleet, since the implementation already exists,
 machine closed specifications are not a problem.
@@ -281,8 +282,8 @@ The proof strategy works as follows~\cite{ironfleet} -
 \subsection{Discussion of Benefits and Limitations}
 IronFleet aims to address the problem of using existing techniques in software verification
 to provide end to end verification for complex distributed systems. The motivation for 
-making existing solutions work in a practical setting, without compromising on the feature-
-richness and performance of the systems being verified. The solutions presented in the IronFleet
+making existing solutions work in a practical setting, without compromising on the
+feature-richness and performance of the systems being verified. The solutions presented in the IronFleet
 methodology present a compelling case. The systems verified using IronFleet worked correctly (barring
 the unverified components like the C\# clients)
 when they were run, which makes a compelling argument for the effectiveness of the technique.
@@ -302,11 +303,11 @@ There are several caveats to the approach however. The first is the reliance of 
  existing distributed systems. 
 
  Another limitation is the manner in which specifications themselves have to written. The 
- authors mention that actions in protocol specifications have to be written as "always enabled"
+ authors mention that actions in protocol specifications have to be written as ``always enabled''
  actions for fairness verification. The authors acknowledge that their methodology is not 
  in compliance with the recommended way of writing specifications in TLA, as it may lead
- to "machine closed" specifications. The authors illustrate with an example that an action
- predicate may be converted to an "always enabled" predicate 
+ to ``machine closed'' specifications. The authors illustrate with an example that an action
+ predicate may be converted to an ``always enabled'' predicate 
  (see Section~\ref{sec:always-enabled}). However, they don't provide a proof that any
  action can always be rewritten as an always-enabled action. This leads to the question
  whether all expressible TLA actions can be expressed in IronFleet's Dafny embedding of TLA.
@@ -345,7 +346,7 @@ Future work involves combining techniques from the IronFleet methodology with
 other liveness techniques, to verify a potentially richer set of liveness
 properties for large-scale distributed systems. Other future work involves using
 techniques to verify liveness properties for previously existing systems, rather
-than writing a system in a language like Dafny primed for verification.
+than writing a system in a verification-aware language like Dafny.
 
 %
 % ---- Bibliography ----
