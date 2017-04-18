@@ -29,9 +29,9 @@
   more sophisticated program verification techniques are needed to reason about
   these. In particular, verification of liveness properties, or asserting that a
   property must occur, is traditionally difficult. In this paper, we survey the
-  IronFleet methodology~\cite{ironfleet}, a technique for building distributed
-  systems that are provably correct, as it applies to verification of liveness
-  properties. We consider the embedding of the Temporal Logic of Actions used in
+  IronFleet methodology~\cite{ironfleet}, a technique for verifying safety and
+  liveness properties in practical distributed systems. 
+  We consider the embedding of the Temporal Logic of Actions used in
   IronFleet, and discuss some limitations in their implementation.
 \end{abstract}
 %
@@ -43,9 +43,13 @@ specification of the property he or she is proving correct. This often makes
 large-scale formal verification a difficult and cumbersome task. Still, many
 success stories exist in the area of large-scale formal verification, such as
 the CompCert compiler~\cite{compcert} and the Verve operating
-system~\cite{verve}. However, formal verification of large-scale distributed
-systems are basically nonexistent, due to the difficulty in verifying liveness
-properties rather than safety properties.
+system~\cite{verve}.  However, formal verification of 
+large-scale distributed systems presents many challenges, such as network
+complexity and interactions between nodes. Even with single node system, proving 
+liveness properties in general is harder than just proving safety properties.
+Add to that the inherent complexity of distributed systems over single node systems,
+and the problem of proving distributed systems correct becomes significantly harder.
+
 
 \subsection{Safety Verification}
 Most formal verification techniques focus on verifying safety
@@ -209,7 +213,7 @@ Since state of the art SMT solvers like Z3 do not provide direct support for tem
 $\square$ and $\lozenge$, explicit quantification over states is used instead ($\square$ universally
 quantifies over all future states, while $\lozenge$ existentially quantifies over some future states).
 IronFleet uses Z3's support for triggers to control the quantification with heuristics. 
-Using Heuristics, IronFleet can efficiently use TLA's INV1 and WF1 rules. Often, a liveness proof in 
+Using Heuristics, IronFleet can efficiently use the embedding of TLA rules in Dafny. Often, a liveness proof in 
 IronFleet can involve multiple invocations of the WF1 rule. We discuss the proof strategy briefly
 in following sections.
 
@@ -239,7 +243,7 @@ and implementation, with a focus on IronFleet's role.
 
 
 \textbf{Generic Refinement Library} $-$ IronFleet's generic refinement library allows for proving the implementation 
-layer refines the protocol specification. For instance, in IronRSL's implementation uses $uint64$ to 
+layer refines the protocol specification. For instance, in IronRSL's implementation uses a map from $uint64$ to 
 IP addresses, while the protocol description uses a map from mathematical integers to to abstract node identifiers.
 In the proof, it must be established that removing an element from the concrete map corresponds to a similar 
 operation in the abstract protocol description. The generic refinement library allows reasoning over 
@@ -337,7 +341,8 @@ the translation used in~\cite{Schuppan2006} incurs a large increase in problem
 size, making this technique not scalable as well.
 
 IronFleet solves the scalability problems above by encoding an embedding of
-Lamport's Temporal Logic of Actions. They demonstrate the scalability in
+Lamport's Temporal Logic of Actions, structuring the proof in layers, and using 
+refinement. They demonstrate the scalability in
 practice by verifying liveness properties of two large-scale distributed systems
 they defined, including IronRSL, though this approach is not without its own
 limitations.
