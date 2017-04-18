@@ -213,7 +213,7 @@ Since state of the art SMT solvers like Z3 do not provide direct support for tem
 $\square$ and $\lozenge$, explicit quantification over states is used instead ($\square$ universally
 quantifies over all future states, while $\lozenge$ existentially quantifies over some future states).
 IronFleet uses Z3's support for triggers to control the quantification with heuristics. 
-Using Heuristics, IronFleet can efficiently use the embedding of TLA rules in Dafny. Often, a liveness proof in 
+Using heuristics, IronFleet can efficiently use the embedding of TLA rules in Dafny. Often, a liveness proof in 
 IronFleet can involve multiple invocations of the WF1 rule. We discuss the proof strategy briefly
 in following sections.
 
@@ -295,7 +295,13 @@ when they were run, which makes a compelling argument for the effectiveness of t
 There are several caveats to the approach however. The first is the reliance of the system on Dafny.
  The entire suite, from the specification, to the implementation is entirely written in Dafny. The 
  authors do make their code, and embedding of TLA available, but it can only be used if the software
- to be verified itself is written in Dafny, which is a limitation. 
+ to be verified itself is written in Dafny, which is a limitation.
+
+ One simple limitation is that, of the four fairness rules present in TLA, only
+ the WF1 rule is encoded in Dafny. This means there likely will be some
+ properties that cannot be proved with this encoding, such as those regarding
+ the incrementer program in Section~\ref{sec:tla}. A more sophisticated
+ embedding of the TLA rules could help solve this issue.
 
  The amount of effort required to produce verified software using the techniques presented, is also 
  non-negligible. As the authors themselves acknowledge, in exchange for strong guarantees, developers
